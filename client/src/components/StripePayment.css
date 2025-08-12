@@ -1,0 +1,91 @@
+.stripe-card-element {
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    width: 100%;
+}
+
+.stripe-card-element-input {
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.15s ease-in-out;
+    width: 100%;
+    font-size: 16px !important; /* Prevent zoom on mobile */
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 640px) {
+    .stripe-card-element {
+        padding: 8px;
+    }
+
+    .stripe-card-element-input {
+        min-height: 56px; /* Taller on mobile for better touch targets */
+        padding: 8px 10px;
+        font-size: 16px !important; /* Prevent zoom on mobile */
+    }
+
+    /* Ensure the iframe is properly sized on mobile */
+    .stripe-card-element-input iframe {
+        min-height: 56px !important;
+        width: 100% !important;
+    }
+}
+
+.stripe-card-element-input:focus-within {
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+    border-color: #4299e1;
+    outline: none;
+}
+
+/* Ensure the input is always visible to screen readers */
+.stripe-card-element-input input {
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 1;
+    font-size: 16px !important;
+    color: #1a202c !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Style for the card element when it's complete */
+.stripe-card-element-input.StripeElement--complete {
+    border-color: #48bb78;
+    background-color: #f0fff4;
+}
+
+/* Style for the card element when it's focused */
+.stripe-card-element-input.StripeElement--focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+}
+
+/* Style for the card element when it's invalid */
+.stripe-card-element-input.StripeElement--invalid {
+    border-color: #f56565;
+    background-color: #fff5f5;
+}
+
+/* Ensure the container doesn't overflow on mobile */
+form {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+/* Adjust the card element container for mobile */
+@media screen and (max-width: 640px) {
+    .p-4.bg-gray-50.rounded-lg.border.border-gray-200 {
+        padding: 12px;
+        margin: 0 -8px; /* Negative margin to allow full width */
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+} 
