@@ -236,8 +236,8 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: `https://blinkeet-v2.onrender.com/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://blinkeet-v2.onrender.com/cancel`,
+      success_url: `https://blinkeet-6pfq.onrender.com/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://blinkeet-6pfq.onrender.com/cancel`,
       metadata: {
         userId,
         addressId,
