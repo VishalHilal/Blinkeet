@@ -136,7 +136,7 @@ const ProductListPage = () => {
   }, [params, AllSubCategory, categoryId]);
 
   return (
-    <section className="sticky top-24 lg:top-20">
+    <section className="sticky  top-24 lg:top-20">
       <div className="container mx-auto grid grid-cols-[90px,1fr] md:grid-cols-[200px,1fr] lg:grid-cols-[260px,1fr] gap-4 px-2">
         {/* Sidebar - Subcategories */}
         <div className="min-h-[88vh] mt-20 lg:mt-36 max-h-[88vh] overflow-y-scroll rounded-lg shadow border bg-white py-3 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">

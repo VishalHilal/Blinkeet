@@ -166,7 +166,7 @@ const ProductDisplayPage = () => {
   }, [data.image]); // Re-run when images change
 
   return (
-   <section className='container mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-6'>
+   <section className='container mx-auto p-4 lg:mt-32 grid grid-cols-1 lg:grid-cols-2 gap-6'>
   {/* Left: Image section */}
   <div className='space-y-4'>
     {/* Main Image */}

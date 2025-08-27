@@ -826,7 +826,7 @@ const sectionPattern = new RegExp(`(${validSectionNames.join('|')})`, 'g')
   return (
 
     // this is upload product section , here we can upload the product images 
-    <section className=''>
+    <section className='mt-28'>
         <div className='p-2   bg-white shadow-md flex items-center justify-between'>
             <h2 className='font-semibold'>Upload Product</h2>
             <div className='flex gap-2'>

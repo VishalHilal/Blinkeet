@@ -27,7 +27,6 @@ const ProductAdmin = () => {
 
       const { data: responseData } = response
 
-      console.log("admin page data",  responseData);
 
       if (responseData.success) {
         setTotalPageCount(responseData.totalNoPage)
@@ -79,7 +78,7 @@ const ProductAdmin = () => {
   return (
     <section className="w-full">
       {/* Top Bar */}
-      <div className="p-4 bg-white lg:mt-28 sm:mt-12 shadow-sm border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-4 bg-white lg:mt-18 sm:mt-12 shadow-sm border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="hidden lg:block text-xl font-semibold text-gray-800">Manage Products</h2>
         <div className="flex items-center mt-10 lg:mt-0 gap-2 bg-gray-100 px-3 py-2 rounded-md w-full sm:w-72 border border-gray-300 focus-within:ring-2 ring-green-500">
           <IoSearchOutline size={20} className="text-gray-500" />

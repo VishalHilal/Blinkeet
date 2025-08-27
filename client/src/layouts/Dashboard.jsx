@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 const Dashboard = () => {
 
   return (
-    <section className='bg-gray-50 min-h-screen'>
+    <section className='bg-gray-50 mt-10 min-h-screen'>
       <div className='container mx-auto px-4 py-6 grid lg:grid-cols-[250px_1fr] gap-6'>
         
         {/* Sidebar */}

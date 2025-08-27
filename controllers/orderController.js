@@ -121,7 +121,6 @@ export async function paymentController(request, response) {
       payment_method,
       upi_id,
     });
-
     // Create order items for successful payment
     const orderItems = list_items.map((item) => ({
       userId: userId,
@@ -178,6 +177,7 @@ export async function paymentController(request, response) {
           },
         },
       };
+
     } else {
       paymentIntentConfig.automatic_payment_methods = {
         enabled: true,
@@ -218,6 +218,9 @@ export async function getOrderDetailsController(request, response) {
 export async function stripePaymentController(req, res) {
   const { amount, addressId, cartItems } = req.body;
   const userId = req.userId;
+
+  console.log("the amount from frontend is", amount);
+
 
       const orderItems = await CartProductModel.find({ userId }).populate("productId");
      

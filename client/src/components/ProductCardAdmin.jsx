@@ -63,7 +63,7 @@ const ProductCardAdmin = ({ data, fetchProductData }) => {
           </button>
           <button
             onClick={() => setOpenDelete(true)}
-            className="text-xs px-3 py-1.5 rounded-lg border border-red-500 text-red-600 bg-red-50 hover:bg-red-100 transition"
+            className="text-xs px-1 py-1.5 rounded-lg border border-red-500 text-red-600 bg-red-50 hover:bg-red-100 transition"
           >
             Delete
           </button>

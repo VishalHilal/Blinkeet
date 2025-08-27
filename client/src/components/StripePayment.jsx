@@ -2,16 +2,27 @@
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import { loadStripe } from '@stripe/stripe-js';
+import toast from 'react-hot-toast';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const StripePayment = ({ amount, addressId, cartItems }) => {
+
+  console.log("amount is" , amount);
+  console.log("addrssId is", addressId);
+  console.log('cart items are ', cartItems);
+
 
   const handleStripeCheckout = async () => {
     if (amount === 0) {
       alert('Please add some items first');
       return;
     }
+
+  console.log("amount is" , amount);
+  console.log("addrssId is", addressId);
+  console.log('cart items are ', cartItems);
+
 
     try {
       // ✅ UPDATED: Call backend to create Stripe Checkout session
@@ -37,6 +48,10 @@ const StripePayment = ({ amount, addressId, cartItems }) => {
         console.error("No session ID received from backend");
       }
     } catch (error) {
+
+      if(error.status ===500){
+        toast.error("please add more idems to cart");
+      }
       console.error(error);
     }
 
