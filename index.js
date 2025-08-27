@@ -66,7 +66,7 @@ app.get('/success', (req, res) => {
   const message = req.query.text || "Payment";
   res.render('success.ejs', { 
     text: message,
-    frontendUrl:"https://blinkeet-rho.vercel.app/"
+    frontendUrl:"https://blinkeet-rho.vercel.app"
   });
 });
 
