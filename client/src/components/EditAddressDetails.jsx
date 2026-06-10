@@ -56,7 +56,7 @@ const EditAddressDetails = ({ close, data }) => {
         <section className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center p-4 overflow-y-auto">
             <div className="bg-white w-full max-w-lg rounded-2xl shadow-lg mt-10 p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-800">Edit Address</h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Update Address</h2>
                     <button onClick={close} className="text-gray-500 hover:text-red-500 transition">
                         <IoClose size={28} />
                     </button>
