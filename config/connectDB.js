@@ -1,8 +1,17 @@
 import mongoose from "mongoose";
 import dotenv from 'dotenv'
-dotenv.config()
+import dns from "dns";
 
-if(!process.env.MONGO_URL){
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
+dotenv.config();
+
+const MONGO_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGO_URL
+    : "mongodb://127.0.0.1:27017/blinkeet";
+
+if(!MONGO_URL){
     throw new Error(
         "Please provide MONGODB_URL in the .env file"
     )

@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon /utils/index.js",
+    "server": "nodemon index.js",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },

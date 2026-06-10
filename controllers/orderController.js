@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const BASE_URL = process.env.NODE_ENV === "production" ? process.env.VITE_BASE_URL : "http://localhost:3000"
 
 // cash on delivery controller
 export async function CashOnDeliveryOrderController(request, response) {
@@ -239,8 +240,8 @@ export async function stripePaymentController(req, res) {
         },
       ],
       mode: "payment",
-      success_url: `https://blinkeet-6pfq.onrender.com/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://blinkeet-6pfq.onrender.com/cancel`,
+      success_url: `${BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${BASE_URL}/cancel`,
       metadata: {
         userId,
         addressId,

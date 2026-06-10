@@ -1,4 +1,4 @@
-export const baseURL ="https://blinkeet-6pfq.onrender.com"  // backend server url
+export const baseURL = import.meta.env.NODE_ENV === "production" ? import.meta.env.VITE_BASE_URL : "http://localhost:3000"
 
 const SummaryApi = {
     register : {
