@@ -1,4 +1,4 @@
-export const baseURL = import.meta.env.VIE_NODE_ENV === "production" ? import.meta.env.VITE_BASE_URL : "http://localhost:3000"
+export const baseURL = import.meta.env.VIE_NODE_ENV === "production" ? import.meta.env.VITE_BASE_URL : "https://blinkeet-6pfq.onrender.com"
 
 const SummaryApi = {
     register : {
