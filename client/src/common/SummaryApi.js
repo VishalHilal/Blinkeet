@@ -1,9 +1,5 @@
 export const baseURL = import.meta.env.VIE_NODE_ENV === "production" ? import.meta.env.VITE_BASE_URL : "http://localhost:3000"
 
-
-console.log("node env is", import.meta.env.VITE_NODE_ENV);
-
-
 const SummaryApi = {
     register : {
         url : '/api/user/register',
