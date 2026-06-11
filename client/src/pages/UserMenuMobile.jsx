@@ -1,24 +1,30 @@
-import React from 'react'
-import UserMenu from '../components/UserMenu'
-import { IoClose } from "react-icons/io5"
+import { useNavigate } from "react-router-dom";
+import UserMenu from "../components/UserMenu";
+import { FiArrowLeft } from "react-icons/fi";
 
 const UserMenuMobile = () => {
+  const navigate = useNavigate();
+
   return (
-    <section className="bg-white h-full w-full py-4 px-4 sm:px-6 shadow-sm">
-      <div className="flex justify-end mb-4">
+    <section className="bg-white min-h-screen flex flex-col">
+      {/* Top bar */}
+      <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
         <button
-          onClick={() => window.history.back()}
-          className="text-gray-700 hover:text-red-500 transition-colors duration-200"
-          aria-label="Close menu"
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-xl hover:bg-gray-100 text-gray-600 transition"
+          aria-label="Go back"
         >
-          <IoClose size={28} />
+          <FiArrowLeft size={20} />
         </button>
+        <h1 className="font-semibold text-gray-800">Account</h1>
       </div>
-      <div className="container mx-auto max-w-md pb-8">
-        <UserMenu />
+
+      {/* Menu */}
+      <div className="flex-1 overflow-y-auto">
+        <UserMenu close={() => navigate(-1)} />
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default UserMenuMobile
+export default UserMenuMobile;

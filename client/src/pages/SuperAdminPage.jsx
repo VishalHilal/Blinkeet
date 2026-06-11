@@ -9,6 +9,7 @@ import {
   FiShield,
   FiTrendingUp,
   FiChevronDown,
+  FiSearch,
 } from "react-icons/fi";
 
 const ROLES = ["USER", "ADMIN", "SUPERADMIN"];
@@ -98,83 +99,133 @@ const SuperAdminPage = () => {
     {
       label: "Total Users",
       value: users.length,
-      icon: <FiUsers size={18} />,
+      icon: <FiUsers size={16} />,
       color: "text-blue-600",
       bg: "bg-blue-50",
     },
     {
       label: "Admins",
       value: users.filter((u) => u.role === "ADMIN").length,
-      icon: <FiShield size={18} />,
+      icon: <FiShield size={16} />,
       color: "text-indigo-600",
       bg: "bg-indigo-50",
     },
     {
       label: "Superadmins",
       value: users.filter((u) => u.role === "SUPERADMIN").length,
-      icon: <FiShield size={18} />,
+      icon: <FiShield size={16} />,
       color: "text-purple-600",
       bg: "bg-purple-50",
     },
     {
-      label: "Total Orders",
+      label: "Orders",
       value: orders.length,
-      icon: <FiTrendingUp size={18} />,
+      icon: <FiTrendingUp size={16} />,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
     },
   ];
 
+  const Spinner = ({ color = "purple" }) => (
+    <div className="flex flex-col items-center justify-center py-16 gap-3 text-gray-400">
+      <div
+        className={`w-8 h-8 border-2 border-${color}-200 border-t-${color}-500 rounded-full animate-spin`}
+      />
+      <span className="text-sm">Loading…</span>
+    </div>
+  );
+
+  const Avatar = ({ user }) =>
+    user.avatar ? (
+      <img
+        src={user.avatar}
+        alt={user.name}
+        className="w-8 h-8 rounded-full object-cover border border-gray-200 flex-shrink-0"
+      />
+    ) : (
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
+        {user.name?.charAt(0).toUpperCase()}
+      </div>
+    );
+
+  const RoleSelect = ({ user }) => (
+    <div className="relative inline-flex items-center">
+      <select
+        value={user.role}
+        disabled={updatingId === user._id}
+        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+        className="appearance-none text-xs border border-gray-200 rounded-lg pl-2.5 pr-6 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:opacity-40 cursor-pointer hover:border-gray-300 transition"
+      >
+        {ROLES.map((r) => (
+          <option key={r} value={r}>
+            {r}
+          </option>
+        ))}
+      </select>
+      <FiChevronDown
+        size={11}
+        className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+      />
+      {updatingId === user._id && (
+        <span className="ml-2 text-xs text-purple-400 whitespace-nowrap">Saving…</span>
+      )}
+    </div>
+  );
+
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <div className="mb-6 pb-5 border-b border-gray-100">
-        <div className="flex items-center gap-3 mb-1">
-          <span className="p-2 bg-purple-100 rounded-xl text-purple-600">
-            <FiShield size={20} />
+    <div className="w-full space-y-4 sm:space-y-5">
+      {/* ── Header ── */}
+      <div className="pb-4 border-b border-gray-100">
+        <div className="flex items-center gap-2.5 mb-0.5">
+          <span className="p-1.5 bg-purple-100 rounded-xl text-purple-600">
+            <FiShield size={18} />
           </span>
-          <h1 className="text-xl font-bold text-gray-800">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
             Superadmin Dashboard
           </h1>
         </div>
-        <p className="text-sm text-gray-400 ml-11">
-          Manage all users, roles, and orders across the platform
+        <p className="text-xs sm:text-sm text-gray-400 ml-9">
+          Manage users, roles, and orders
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      {/* ── Stats ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {stats.map((s) => (
           <div
             key={s.label}
-            className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-white border border-gray-100 rounded-xl sm:rounded-2xl p-3 sm:p-4 flex items-center gap-2.5 shadow-sm"
           >
-            <div className={`p-2.5 rounded-xl ${s.bg} ${s.color} flex-shrink-0`}>
+            <div
+              className={`p-2 rounded-lg sm:rounded-xl ${s.bg} ${s.color} flex-shrink-0`}
+            >
               {s.icon}
             </div>
-            <div>
-              <p className="text-[11px] text-gray-400 uppercase tracking-wide font-medium">
+            <div className="min-w-0">
+              <p className="text-[10px] sm:text-[11px] text-gray-400 uppercase tracking-wide font-medium leading-tight">
                 {s.label}
               </p>
-              <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+              <p className={`text-xl sm:text-2xl font-bold ${s.color}`}>
+                {s.value}
+              </p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-gray-100 p-1 rounded-xl w-fit">
+      {/* ── Tabs ── */}
+      <div className="flex gap-1 bg-gray-100 p-1 rounded-xl w-full sm:w-fit">
         {["Users", "Orders"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === tab
                 ? "bg-white text-gray-800 shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            {tab === "Users" ? <FiUsers size={14} /> : <FiShoppingBag size={14} />}
+            {tab === "Users" ? <FiUsers size={13} /> : <FiShoppingBag size={13} />}
             {tab}
             <span
               className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${
@@ -189,288 +240,377 @@ const SuperAdminPage = () => {
         ))}
       </div>
 
-      {/* ── Users Tab ── */}
+      {/* ══════════════════════════════
+           USERS TAB
+         ══════════════════════════════ */}
       {activeTab === "Users" && (
         <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-          {/* Table toolbar */}
-          <div className="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {/* Toolbar */}
+          <div className="px-4 sm:px-5 py-3.5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
             <h2 className="font-semibold text-gray-700 text-sm">
               All Registered Users
             </h2>
-            <input
-              type="text"
-              placeholder="Search by name or email…"
-              value={searchUser}
-              onChange={(e) => setSearchUser(e.target.value)}
-              className="w-full sm:w-64 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-400"
-            />
+            <div className="relative w-full sm:w-60">
+              <FiSearch
+                size={13}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              />
+              <input
+                type="text"
+                placeholder="Search name or email…"
+                value={searchUser}
+                onChange={(e) => setSearchUser(e.target.value)}
+                className="w-full text-sm border border-gray-200 rounded-lg pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 placeholder-gray-400"
+              />
+            </div>
           </div>
 
           {loadingUsers ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
-              <div className="w-8 h-8 border-2 border-purple-200 border-t-purple-500 rounded-full animate-spin" />
-              <span className="text-sm">Loading users…</span>
-            </div>
+            <Spinner color="purple" />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-left">
-                    {["User", "Mobile", "Status", "Current Role", "Change Role", "Joined"].map(
-                      (h) => (
-                        <th
-                          key={h}
-                          className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          {h}
-                        </th>
-                      )
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {filteredUsers.map((user) => (
-                    <tr
-                      key={user._id}
-                      className="hover:bg-gray-50/60 transition-colors"
-                    >
-                      {/* User */}
-                      <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-3">
-                          {user.avatar ? (
-                            <img
-                              src={user.avatar}
-                              alt={user.name}
-                              className="w-8 h-8 rounded-full object-cover border border-gray-200 flex-shrink-0"
-                            />
-                          ) : (
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white font-semibold text-xs flex-shrink-0">
-                              {user.name?.charAt(0).toUpperCase()}
-                            </div>
-                          )}
-                          <div className="min-w-0">
-                            <p className="font-medium text-gray-800 truncate max-w-[130px]">
-                              {user.name}
-                            </p>
-                            <p className="text-xs text-gray-400 truncate max-w-[160px]">
-                              {user.email}
-                            </p>
-                          </div>
+            <>
+              {/* ── sm: card list ── */}
+              <div className="block md:hidden divide-y divide-gray-50">
+                {filteredUsers.map((user) => (
+                  <div key={user._id} className="px-4 py-4 space-y-3">
+                    {/* top row: avatar + name + status */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <Avatar user={user} />
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-800 text-sm truncate">
+                            {user.name}
+                          </p>
+                          <p className="text-xs text-gray-400 truncate">
+                            {user.email}
+                          </p>
                         </div>
-                      </td>
-
-                      {/* Mobile */}
-                      <td className="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap">
-                        {user.mobile || <span className="text-gray-300">—</span>}
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-5 py-3.5">
+                      </div>
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${
+                          user.status === "Active"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-red-100 text-red-600"
+                        }`}
+                      >
                         <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
+                          className={`w-1.5 h-1.5 rounded-full ${
                             user.status === "Active"
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-red-100 text-red-600"
+                              ? "bg-emerald-500"
+                              : "bg-red-500"
                           }`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              user.status === "Active"
-                                ? "bg-emerald-500"
-                                : "bg-red-500"
-                            }`}
-                          />
-                          {user.status}
-                        </span>
-                      </td>
+                        />
+                        {user.status}
+                      </span>
+                    </div>
 
-                      {/* Current Role */}
-                      <td className="px-5 py-3.5">
-                        <span
-                          className={`px-2.5 py-1 rounded-full text-xs font-semibold ${roleBadgeClass(
-                            user.role
-                          )}`}
-                        >
-                          {user.role}
-                        </span>
-                      </td>
-
-                      {/* Change Role */}
-                      <td className="px-5 py-3.5">
-                        <div className="relative inline-block">
-                          <select
-                            value={user.role}
-                            disabled={updatingId === user._id}
-                            onChange={(e) =>
-                              handleRoleChange(user._id, e.target.value)
-                            }
-                            className="appearance-none text-xs border border-gray-200 rounded-lg pl-3 pr-7 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 disabled:opacity-40 cursor-pointer hover:border-gray-300 transition"
-                          >
-                            {ROLES.map((r) => (
-                              <option key={r} value={r}>
-                                {r}
-                              </option>
-                            ))}
-                          </select>
-                          <FiChevronDown
-                            size={12}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-                          />
-                          {updatingId === user._id && (
-                            <span className="ml-2 text-xs text-purple-400">
-                              Saving…
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      {/* Joined */}
-                      <td className="px-5 py-3.5 text-gray-400 text-xs whitespace-nowrap">
+                    {/* bottom row: role badge + role select + joined */}
+                    <div className="flex items-center flex-wrap gap-2">
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-semibold ${roleBadgeClass(
+                          user.role
+                        )}`}
+                      >
+                        {user.role}
+                      </span>
+                      <RoleSelect user={user} />
+                      <span className="ml-auto text-[11px] text-gray-400">
                         {new Date(user.createdAt).toLocaleDateString("en-IN", {
                           day: "numeric",
                           month: "short",
                           year: "numeric",
                         })}
-                      </td>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── md+: table ── */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-left">
+                      {[
+                        "User",
+                        "Mobile",
+                        "Status",
+                        "Current Role",
+                        "Change Role",
+                        "Joined",
+                      ].map((h) => (
+                        <th
+                          key={h}
+                          className="px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
+                        >
+                          {h}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {filteredUsers.map((user) => (
+                      <tr
+                        key={user._id}
+                        className="hover:bg-gray-50/60 transition-colors"
+                      >
+                        <td className="px-5 py-3.5">
+                          <div className="flex items-center gap-3">
+                            <Avatar user={user} />
+                            <div className="min-w-0">
+                              <p className="font-medium text-gray-800 truncate max-w-[140px]">
+                                {user.name}
+                              </p>
+                              <p className="text-xs text-gray-400 truncate max-w-[160px]">
+                                {user.email}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap">
+                          {user.mobile || <span className="text-gray-300">—</span>}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
+                              user.status === "Active"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-red-100 text-red-600"
+                            }`}
+                          >
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                user.status === "Active"
+                                  ? "bg-emerald-500"
+                                  : "bg-red-500"
+                              }`}
+                            />
+                            {user.status}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-xs font-semibold ${roleBadgeClass(
+                              user.role
+                            )}`}
+                          >
+                            {user.role}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <RoleSelect user={user} />
+                        </td>
+                        <td className="px-5 py-3.5 text-gray-400 text-xs whitespace-nowrap">
+                          {new Date(user.createdAt).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
               {filteredUsers.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-                  <FiUsers size={32} className="mb-2 opacity-30" />
+                <div className="flex flex-col items-center justify-center py-14 text-gray-400">
+                  <FiUsers size={28} className="mb-2 opacity-30" />
                   <p className="text-sm">
-                    {searchUser ? "No users match your search" : "No users found"}
+                    {searchUser
+                      ? "No users match your search"
+                      : "No users found"}
                   </p>
                 </div>
               )}
-            </div>
+            </>
           )}
 
-          {/* Footer count */}
           {!loadingUsers && filteredUsers.length > 0 && (
-            <div className="px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
+            <div className="px-4 sm:px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
               Showing {filteredUsers.length} of {users.length} users
             </div>
           )}
         </div>
       )}
 
-      {/* ── Orders Tab ── */}
+      {/* ══════════════════════════════
+           ORDERS TAB
+         ══════════════════════════════ */}
       {activeTab === "Orders" && (
         <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100">
+          <div className="px-4 sm:px-5 py-3.5 border-b border-gray-100">
             <h2 className="font-semibold text-gray-700 text-sm">All Orders</h2>
           </div>
 
           {loadingOrders ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-400">
-              <div className="w-8 h-8 border-2 border-emerald-200 border-t-emerald-500 rounded-full animate-spin" />
-              <span className="text-sm">Loading orders…</span>
-            </div>
+            <Spinner color="emerald" />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-50 text-left">
-                    {["Order ID", "Customer", "Product", "Amount", "Payment", "Date"].map(
-                      (h) => (
-                        <th
-                          key={h}
-                          className="px-5 py-3.5 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
-                        >
-                          {h}
-                        </th>
-                      )
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {orders.map((order) => (
-                    <tr
-                      key={order._id}
-                      className="hover:bg-gray-50/60 transition-colors"
-                    >
-                      {/* Order ID */}
-                      <td className="px-5 py-3.5">
-                        <span className="font-mono text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
-                          {order.orderId?.slice(0, 14)}…
-                        </span>
-                      </td>
-
-                      {/* Customer */}
-                      <td className="px-5 py-3.5">
-                        {order.userId ? (
-                          <div>
-                            <p className="font-medium text-gray-800 truncate max-w-[120px]">
-                              {order.userId.name}
-                            </p>
-                            <p className="text-xs text-gray-400 truncate max-w-[150px]">
-                              {order.userId.email}
-                            </p>
-                          </div>
-                        ) : (
-                          <span className="text-gray-300">—</span>
-                        )}
-                      </td>
-
-                      {/* Product */}
-                      <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-2">
-                          {order.product_details?.image?.[0] && (
-                            <img
-                              src={order.product_details.image[0]}
-                              alt=""
-                              className="w-8 h-8 object-contain rounded-lg border border-gray-100 flex-shrink-0"
-                            />
-                          )}
-                          <span className="text-gray-700 truncate max-w-[130px] text-xs">
-                            {order.product_details?.name || "—"}
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* Amount */}
-                      <td className="px-5 py-3.5 font-semibold text-gray-800 whitespace-nowrap">
-                        ₹{order.totalAmt?.toLocaleString("en-IN")}
-                      </td>
-
-                      {/* Payment */}
-                      <td className="px-5 py-3.5">
-                        <span
-                          className={`px-2.5 py-1 rounded-full text-xs font-medium ${paymentBadgeClass(
-                            order.payment_status
-                          )}`}
-                        >
-                          {order.payment_status || "Pending"}
-                        </span>
-                      </td>
-
-                      {/* Date */}
-                      <td className="px-5 py-3.5 text-gray-400 text-xs whitespace-nowrap">
+            <>
+              {/* ── sm: card list ── */}
+              <div className="block md:hidden divide-y divide-gray-50">
+                {orders.map((order) => (
+                  <div key={order._id} className="px-4 py-4 space-y-2.5">
+                    {/* Order ID + date */}
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                        {order.orderId?.slice(0, 16)}…
+                      </span>
+                      <span className="text-[11px] text-gray-400">
                         {new Date(order.createdAt).toLocaleDateString("en-IN", {
                           day: "numeric",
                           month: "short",
                           year: "numeric",
                         })}
-                      </td>
+                      </span>
+                    </div>
+
+                    {/* Product */}
+                    <div className="flex items-center gap-2">
+                      {order.product_details?.image?.[0] && (
+                        <img
+                          src={order.product_details.image[0]}
+                          alt=""
+                          className="w-9 h-9 object-contain rounded-lg border border-gray-100 flex-shrink-0"
+                        />
+                      )}
+                      <span className="text-sm font-medium text-gray-700 truncate">
+                        {order.product_details?.name || "—"}
+                      </span>
+                    </div>
+
+                    {/* Customer + amount + payment */}
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div>
+                        {order.userId ? (
+                          <>
+                            <p className="text-xs font-medium text-gray-700">
+                              {order.userId.name}
+                            </p>
+                            <p className="text-[11px] text-gray-400">
+                              {order.userId.email}
+                            </p>
+                          </>
+                        ) : (
+                          <span className="text-gray-300 text-xs">
+                            Unknown user
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-gray-800 text-sm">
+                          ₹{order.totalAmt?.toLocaleString("en-IN")}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium ${paymentBadgeClass(
+                            order.payment_status
+                          )}`}
+                        >
+                          {order.payment_status || "Pending"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── md+: table ── */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 text-left">
+                      {[
+                        "Order ID",
+                        "Customer",
+                        "Product",
+                        "Amount",
+                        "Payment",
+                        "Date",
+                      ].map((h) => (
+                        <th
+                          key={h}
+                          className="px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
+                        >
+                          {h}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {orders.map((order) => (
+                      <tr
+                        key={order._id}
+                        className="hover:bg-gray-50/60 transition-colors"
+                      >
+                        <td className="px-5 py-3.5">
+                          <span className="font-mono text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                            {order.orderId?.slice(0, 14)}…
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {order.userId ? (
+                            <div>
+                              <p className="font-medium text-gray-800 truncate max-w-[120px]">
+                                {order.userId.name}
+                              </p>
+                              <p className="text-xs text-gray-400 truncate max-w-[150px]">
+                                {order.userId.email}
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-gray-300">—</span>
+                          )}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <div className="flex items-center gap-2">
+                            {order.product_details?.image?.[0] && (
+                              <img
+                                src={order.product_details.image[0]}
+                                alt=""
+                                className="w-8 h-8 object-contain rounded-lg border border-gray-100 flex-shrink-0"
+                              />
+                            )}
+                            <span className="text-gray-700 truncate max-w-[130px] text-xs">
+                              {order.product_details?.name || "—"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-5 py-3.5 font-semibold text-gray-800 whitespace-nowrap">
+                          ₹{order.totalAmt?.toLocaleString("en-IN")}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${paymentBadgeClass(
+                              order.payment_status
+                            )}`}
+                          >
+                            {order.payment_status || "Pending"}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 text-gray-400 text-xs whitespace-nowrap">
+                          {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
               {orders.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-16 text-gray-400">
-                  <FiShoppingBag size={32} className="mb-2 opacity-30" />
+                <div className="flex flex-col items-center justify-center py-14 text-gray-400">
+                  <FiShoppingBag size={28} className="mb-2 opacity-30" />
                   <p className="text-sm">No orders found</p>
                 </div>
               )}
-            </div>
+            </>
           )}
 
           {!loadingOrders && orders.length > 0 && (
-            <div className="px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
+            <div className="px-4 sm:px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
               Showing {orders.length} orders
             </div>
           )}

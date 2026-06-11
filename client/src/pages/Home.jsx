@@ -61,7 +61,7 @@ const Home = () => {
   };
 
   return (
-    <section className="relative bg-white pt-24">
+    <section className="relative bg-white pt-4">
       {/* Desktop Banner */}
       <div className="hidden lg:block">
         <div className="max-w-7xl mx-auto px-4">
