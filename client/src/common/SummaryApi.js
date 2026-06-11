@@ -1,6 +1,6 @@
 export const baseURL = import.meta.env.VIE_NODE_ENV === "production" ? import.meta.env.VITE_BASE_URL : 
-"https://blinkeet-6pfq.onrender.com"
-// "http://localhost:3000"
+// "https://blinkeet-6pfq.onrender.com"
+"http://localhost:3000"
 
 const SummaryApi = {
     register : {
@@ -181,6 +181,10 @@ const SummaryApi = {
     superadmin_updateRole : {
         url : '/api/superadmin/update-role',
         method : 'put'
+    },
+    superadmin_deleteUser : {
+        url : '/api/superadmin/delete-user',
+        method : 'delete'
     }
 }
 

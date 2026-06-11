@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import auth from '../middleware/auth.js'
 import superAdminAuth from '../middleware/superAdminAuth.js'
-import { getAllUsers, getAllOrders, updateUserRole } from '../controllers/superAdminController.js'
+import { getAllUsers, getAllOrders, updateUserRole, deleteUser } from '../controllers/superAdminController.js'
 
 const superAdminRouter = Router()
 
@@ -9,5 +9,6 @@ const superAdminRouter = Router()
 superAdminRouter.get('/users', auth, superAdminAuth, getAllUsers)
 superAdminRouter.get('/orders', auth, superAdminAuth, getAllOrders)
 superAdminRouter.put('/update-role', auth, superAdminAuth, updateUserRole)
+superAdminRouter.delete('/delete-user/:id', auth, superAdminAuth, deleteUser)
 
 export default superAdminRouter
