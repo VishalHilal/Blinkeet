@@ -20,6 +20,7 @@ import productRouter from './route/productRoute.js'
 import cartRouter from './route/cartRoute.js'
 import addressRouter from './route/addressRoute.js'
 import orderRouter from './route/orderRoute.js'
+import superAdminRouter from './route/superAdminRoute.js'
 
 
 const app = express()
@@ -67,6 +68,7 @@ app.use("/api/product", productRouter)
 app.use("/api/cart", cartRouter)
 app.use("/api/address", addressRouter)
 app.use('/api/order', orderRouter)
+app.use('/api/superadmin', superAdminRouter)
 
 
 app.get('/success', (req, res) => {

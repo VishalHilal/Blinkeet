@@ -45,9 +45,9 @@ const UserMenu = ({ close }) => {
                 <div className="text-xl bg-white h-12 w-40 flex items-center justify-center text-black hover:bg-black hover:text-white rounded ">
                   {user.name.toUpperCase() || user.mobile}
                 </div>
-                {user.role === "ADMIN" && (
+                {(user.role === "ADMIN" || user.role === "SUPERADMIN") && (
                   <div className="inline-flex items-center rounded-full border font-semibold w-max px-2 py-0.5 text-xs text-zinc-950 dark:border-none dark:bg-zinc-800 dark:text-white">
-                    {user.role === "ADMIN" ? "ADMIN" : "USER"}
+                    {user.role}
                   </div>
                 )}
               </span>
@@ -66,6 +66,18 @@ const UserMenu = ({ close }) => {
           </div>
 
           <ul className="flex flex-col">
+            {user.role === "SUPERADMIN" && (
+              <li>
+                <Link
+                  onClick={handleClose}
+                  to="/dashboard/superadmin"
+                  className="flex w-full items-center text-black justify-between rounded-lg py-3 pl-8 hover:text-white dark:hover:bg-purple-600 transition font-semibold"
+                >
+                  🛡️ Superadmin Panel
+                </Link>
+              </li>
+            )}
+
             {isAdmin(user.role) && (
               <li>
                 <Link

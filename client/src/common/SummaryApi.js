@@ -169,6 +169,18 @@ const SummaryApi = {
     getOrderItems : {
         url : '/api/order/order-list',
         method : 'get'
+    },
+    superadmin_getAllUsers : {
+        url : '/api/superadmin/users',
+        method : 'get'
+    },
+    superadmin_getAllOrders : {
+        url : '/api/superadmin/orders',
+        method : 'get'
+    },
+    superadmin_updateRole : {
+        url : '/api/superadmin/update-role',
+        method : 'put'
     }
 }
 
