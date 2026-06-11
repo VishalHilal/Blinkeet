@@ -13,18 +13,18 @@ const Profile = () => {
   const user = useSelector(state => state.user)
   const [openProfileAvatarEdit, setProfileAvatarEdit] = useState(false)
   const [userData, setUserData] = useState({
-    name: user.name,
-    email: user.email,
-    mobile: user.mobile,
+    name: user.name || "",
+    email: user.email || "",
+    mobile: user.mobile || "",
   })
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
     setUserData({
-      name: user.name,
-      email: user.email,
-      mobile: user.mobile,
+      name: user.name || "",
+      email: user.email || "",
+      mobile: user.mobile || "",
     })
   }, [user])
 

@@ -60,7 +60,7 @@ const Dashboard = () => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex-shrink-0 flex flex-col items-center gap-0.5 px-3 py-2 text-[11px] font-medium border-b-2 transition-all ${
+        `flex-shrink-0 flex flex-col items-center justify-center gap-0.5 px-4 min-h-[44px] py-2 text-[11px] font-medium border-b-2 transition-all ${
           isActive ? `${activeBorder} ${activeColor}` : "border-transparent text-gray-400"
         }`
       }
@@ -77,36 +77,10 @@ const Dashboard = () => {
           ════════════════════════════ */}
       <div className="lg:hidden min-h-screen bg-gray-50 flex flex-col">
 
-        {/* Sub-header bar (sits right under the main fixed navbar) */}
+        {/* Sub-header bar — tab strip only, no redundant user row */}
         <div className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
-          {/* User row */}
-          <div className="flex items-center justify-between px-4 py-2.5">
-            <div className="flex items-center gap-2.5 min-w-0">
-              {user.avatar ? (
-                <img src={user.avatar} alt={user.name}
-                  className="w-8 h-8 rounded-full object-cover border-2 border-green-100 flex-shrink-0" />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                  {user.name?.charAt(0)?.toUpperCase() || "U"}
-                </div>
-              )}
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">{user.name || "User"}</p>
-                {user.role && (
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${roleBg[user.role] || roleBg.USER}`}>
-                    {user.role}
-                  </span>
-                )}
-              </div>
-            </div>
-            <button onClick={() => setDrawerOpen(true)}
-              className="p-2 rounded-xl hover:bg-gray-100 text-gray-500 transition" aria-label="Open menu">
-              <FiMenu size={21} />
-            </button>
-          </div>
-
-          {/* Scrollable tab strip */}
-          <div className="flex overflow-x-auto scrollbar-hide border-t border-gray-100">
+          {/* Scrollable tab strip with 44px min touch height */}
+          <div className="flex overflow-x-auto scrollbar-hide">
             {allTabs.map(({ to, icon, label }) => (
               <MobileTab key={to} to={to} icon={icon} label={label}
                 activeColor={to.includes("superadmin") ? "text-purple-600" : "text-green-600"}

@@ -19,9 +19,9 @@ const UserMenuMobile = () => {
         <h1 className="font-semibold text-gray-800">Account</h1>
       </div>
 
-      {/* Menu */}
+      {/* Menu — pass no-op close so NavLink navigation isn't cancelled by navigate(-1) */}
       <div className="flex-1 overflow-y-auto">
-        <UserMenu close={() => navigate(-1)} />
+        <UserMenu close={null} />
       </div>
     </section>
   );
