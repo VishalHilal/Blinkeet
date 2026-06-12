@@ -1,27 +1,27 @@
-import React from 'react';
-
 const CardLoading = () => {
   return (
-    <div className="border py-2 lg:p-4 grid gap-2 lg:gap-4 min-w-36 lg:min-w-52 rounded-2xl cursor-pointer bg-white shadow-sm animate-pulse transition-all duration-300">
-      
+    <div className="
+      w-[140px] sm:w-[160px] md:w-[185px] lg:w-[210px]
+      flex-shrink-0 rounded-2xl border border-gray-100
+      bg-white shadow-sm animate-pulse overflow-hidden flex flex-col
+    ">
       {/* Image skeleton */}
-      <div className="min-h-24 bg-gray-100 rounded-xl" />
+      <div className="h-[110px] sm:h-[130px] md:h-[140px] lg:h-[160px] bg-gray-100 m-2 rounded-xl" />
 
-      {/* Title placeholder */}
-      <div className="h-4 lg:h-5 bg-gray-100 rounded-md w-24 lg:w-28 mx-2" />
-
-      {/* Description placeholder */}
-      <div className="h-4 lg:h-5 bg-gray-100 rounded-md mx-2" />
-
-      {/* Price placeholder */}
-      <div className="h-4 lg:h-5 bg-gray-100 rounded-md w-16 mx-2" />
-
-      {/* Button row */}
-      <div className="flex items-center justify-between gap-3 px-2">
-        <div className="h-4 lg:h-5 bg-gray-100 rounded-md w-20" />
-        <div className="h-4 lg:h-5 bg-gray-100 rounded-md w-20" />
+      <div className="px-2.5 pb-3 flex flex-col gap-2">
+        {/* Delivery badge */}
+        <div className="h-4 w-12 bg-gray-100 rounded-full" />
+        {/* Name */}
+        <div className="h-3.5 bg-gray-100 rounded w-full" />
+        <div className="h-3.5 bg-gray-100 rounded w-3/4" />
+        {/* Unit */}
+        <div className="h-3 bg-gray-100 rounded w-1/2" />
+        {/* Price + button */}
+        <div className="flex items-center justify-between mt-1">
+          <div className="h-4 w-12 bg-gray-100 rounded" />
+          <div className="h-8 w-16 bg-gray-100 rounded-full" />
+        </div>
       </div>
-
     </div>
   );
 };

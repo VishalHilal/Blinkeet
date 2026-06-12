@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 import { useNavigate } from 'react-router-dom';
+import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 import { valideURLConvert } from '../utils/valideURLConvert';
 import { pricewithDiscount } from '../utils/PriceWithDiscount';
 import AddToCartButton from './AddToCartButton';
 
 const CardProduct = ({ data }) => {
   const url = `/product/${valideURLConvert(data.name)}-${data._id}`;
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const discountedPrice = pricewithDiscount(data.price, data.discount);
 
   const handleProductClick = (e) => {
     if (e.target.closest('.add-to-cart-button')) return;
@@ -18,45 +18,73 @@ const CardProduct = ({ data }) => {
   return (
     <div
       onClick={handleProductClick}
-      className="lg:min-w-[250px] min-w-[220px] sm:min-w-[180px] md:min-w-[220px] lg:min-w-[250px] rounded-2xl border shadow-md mb-2 overflow-hidden hover:shadow-lg transition-all cursor-pointer p-2 sm:p-3 space-y-1 sm:space-y-2"
+      /* 
+        Mobile  : 140px wide — fits ~2.4 cards on a 360px screen, feels like Blinkit/Zepto
+        sm      : 160px
+        md      : 185px
+        lg+     : 210px
+      */
+      className="
+        w-[140px] sm:w-[160px] md:w-[185px] lg:w-[210px]
+        flex-shrink-0
+        bg-white rounded-2xl border border-gray-100
+        shadow-sm hover:shadow-md
+        transition-all duration-200
+        cursor-pointer
+        overflow-hidden
+        flex flex-col
+      "
     >
-      {/* Discount Banner */}
-      <div className="relative">
+      {/* Image area */}
+      <div className="relative bg-gray-50 rounded-xl m-2 mb-0">
+        {/* Discount badge */}
         {data.discount > 0 && (
-          <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full z-10 shadow-sm">
+          <span className="absolute top-1.5 left-1.5 z-10 bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
             {data.discount}% OFF
-          </div>
+          </span>
         )}
+
         <img
           src={data.image[0]}
           alt={data.name}
-          className="w-full h-52 object-contain transition-transform duration-300 hover:scale-105"
+          className="w-full h-[110px] sm:h-[130px] md:h-[140px] lg:h-[160px] object-contain p-2"
         />
       </div>
 
-      {/* Delivery Time */}
-      <div className="text-xs font-medium text-green-600 bg-green-100 w-fit px-2 py-0.5 rounded-full">
-        10 min delivery
-      </div>
+      {/* Content */}
+      <div className="flex flex-col flex-1 px-2.5 pt-2 pb-3 gap-1">
+        {/* Delivery badge */}
+        <span className="text-[10px] font-semibold text-green-700 bg-green-50 w-fit px-2 py-0.5 rounded-full leading-none">
+          10 min
+        </span>
 
-      {/* Product Name */}
-      <h3 className="text-base lg:text-lg font-semibold text-gray-900 line-clamp-2">
-        {data.name}
-      </h3>
+        {/* Name */}
+        <h3 className="text-xs sm:text-sm font-semibold text-gray-800 line-clamp-2 leading-snug mt-0.5">
+          {data.name}
+        </h3>
 
-      {/* Unit */}
-      <p className="text-sm text-gray-500">{data.unit}</p>
+        {/* Unit */}
+        <p className="text-[11px] text-gray-400">{data.unit}</p>
 
-      {/* Price and Button */}
-      <div className="flex items-center justify-between pt-2">
-        <div className="text-base lg:text-lg font-bold text-gray-800">
-          {DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}
-        </div>
-        <div>
+        {/* Price + Add button */}
+        <div className="flex items-center justify-between mt-auto pt-1.5">
+          <div>
+            <p className="text-sm sm:text-base font-bold text-gray-900 leading-none">
+              {DisplayPriceInRupees(discountedPrice)}
+            </p>
+            {data.discount > 0 && (
+              <p className="text-[10px] text-gray-400 line-through leading-none mt-0.5">
+                {DisplayPriceInRupees(data.price)}
+              </p>
+            )}
+          </div>
+
           {data.stock === 0 ? (
-            <p className="text-sm text-red-500 font-medium">Out of stock</p>
+            <span className="text-[10px] text-red-500 font-semibold text-right leading-tight">
+              Out of<br />stock
+            </span>
           ) : (
-            <AddToCartButton data={data} />
+            <AddToCartButton data={data} size="sm" />
           )}
         </div>
       </div>

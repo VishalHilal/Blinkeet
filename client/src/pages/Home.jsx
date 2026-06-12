@@ -136,15 +136,51 @@ const Home = () => {
         />
       </div>
 
-      {/* Category List */}
-      <div className="max-w-7xl mx-auto px-4 mt-8">
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-11 gap-3">
+      {/* ── Category List ──
+           Mobile  : single horizontal scrollable row
+           sm+     : grid that wraps
+      ── */}
+      <div className="mt-6">
+        {/* Mobile: horizontal scroll */}
+        <div className="lg:hidden flex gap-3 overflow-x-auto scrollbar-none px-4 pb-1">
           {loadingCategory
-            ? new Array(12).fill(null).map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl p-3 flex flex-col items-center gap-2 shadow-sm animate-pulse"
-                >
+            ? new Array(10).fill(null).map((_, i) => (
+                <div key={i} className="flex-shrink-0 w-[72px] flex flex-col items-center gap-2 animate-pulse">
+                  <div className="w-14 h-14 bg-green-100 rounded-2xl" />
+                  <div className="w-10 h-2.5 bg-green-100 rounded" />
+                </div>
+              ))
+            : categoryData.map((cat) => {
+                const hasSubcategories = subCategoryData.some((sub) =>
+                  sub.category.some((c) => c._id === cat._id)
+                );
+                if (!hasSubcategories) return null;
+                return (
+                  <div
+                    key={cat._id}
+                    onClick={() => handleRedirectProductListpage(cat._id, cat.name)}
+                    className="flex-shrink-0 w-[72px] flex flex-col items-center gap-1.5 cursor-pointer group"
+                  >
+                    <div className="w-14 h-14 rounded-2xl bg-green-50 flex items-center justify-center overflow-hidden border border-green-100 group-hover:border-green-300 transition">
+                      <img
+                        src={cat.image}
+                        alt={cat.name}
+                        className="w-full h-full object-contain p-1.5 group-hover:scale-110 transition-transform duration-200"
+                      />
+                    </div>
+                    <p className="text-[10px] font-medium text-gray-600 text-center leading-tight line-clamp-2 w-full">
+                      {cat.name}
+                    </p>
+                  </div>
+                );
+              })}
+        </div>
+
+        {/* Desktop (lg+): responsive grid */}
+        <div className="hidden lg:grid grid-cols-9 xl:grid-cols-11 gap-3 max-w-7xl mx-auto px-4">
+          {loadingCategory
+            ? new Array(12).fill(null).map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl p-3 flex flex-col items-center gap-2 shadow-sm animate-pulse">
                   <div className="bg-green-100 h-14 w-14 rounded-xl" />
                   <div className="bg-green-100 h-3 w-3/4 rounded" />
                 </div>
@@ -154,7 +190,6 @@ const Home = () => {
                   sub.category.some((c) => c._id === cat._id)
                 );
                 if (!hasSubcategories) return null;
-
                 return (
                   <div
                     key={cat._id}
@@ -168,7 +203,7 @@ const Home = () => {
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
                       />
                     </div>
-                    <p className="text-[11px] sm:text-xs font-medium text-gray-600 text-center leading-tight line-clamp-2 w-full px-0.5">
+                    <p className="text-[11px] font-medium text-gray-600 text-center leading-tight line-clamp-2 w-full px-0.5">
                       {cat.name}
                     </p>
                   </div>

@@ -56,11 +56,14 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
   const redirectURL = handleRedirectProductListpage()
 
   return (
-    <div className="mb-8">
+    <div className="mb-6 sm:mb-8">
       {/* Section Header */}
-      <div className=" mx-auto px-4 flex items-center justify-between mb-4">
-        <h3 className="text-xl md:text-2xl font-semibold text-gray-800">{name}</h3>
-        <Link to={redirectURL} className="text-sm font-medium text-green-600 hover:text-green-500">
+      <div className="flex items-center justify-between mb-3 px-4 max-w-7xl mx-auto">
+        <h3 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800">{name}</h3>
+        <Link
+          to={redirectURL}
+          className="text-xs sm:text-sm font-semibold text-green-600 hover:text-green-500 transition"
+        >
           See All
         </Link>
       </div>
@@ -69,7 +72,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
       <div className="relative">
         <div
           ref={containerRef}
-          className="flex gap-6 md:gap-6 lg:gap-8 overflow-x-auto scroll-hidden-smooth scrollbar-none px-4"
+          className="flex gap-3 sm:gap-4 lg:gap-5 overflow-x-auto scroll-hidden-smooth scrollbar-none px-4"
         >
           {loading
             ? loadingCardNumber.map((_, index) => (
@@ -83,19 +86,19 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
               ))}
         </div>
 
-        {/* Scroll Buttons - visible only on large screens */}
-        <div className="hidden lg:flex justify-between items-center px-4 absolute top-1/2 left-0 right-0 transform -translate-y-1/2 pointer-events-none">
+        {/* Scroll Buttons — desktop only */}
+        <div className="hidden lg:flex justify-between items-center px-4 absolute top-1/2 left-0 right-0 -translate-y-1/2 pointer-events-none">
           <button
             onClick={handleScrollLeft}
-            className="pointer-events-auto bg-white shadow-md hover:bg-gray-100 text-gray-700 p-3 rounded-full transition"
+            className="pointer-events-auto bg-white shadow-md hover:bg-gray-50 text-gray-700 p-2.5 rounded-full transition border border-gray-100"
           >
-            <FaAngleLeft />
+            <FaAngleLeft size={14} />
           </button>
           <button
             onClick={handleScrollRight}
-            className="pointer-events-auto bg-white shadow-md hover:bg-gray-100 text-gray-700 p-3 rounded-full transition"
+            className="pointer-events-auto bg-white shadow-md hover:bg-gray-50 text-gray-700 p-2.5 rounded-full transition border border-gray-100"
           >
-            <FaAngleRight />
+            <FaAngleRight size={14} />
           </button>
         </div>
       </div>
